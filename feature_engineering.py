@@ -226,3 +226,18 @@ def apply_min_max_scaler(file_name, normal_file_name):
             data[col] = scaler.fit_transform(data[col].values.reshape(-1, 1))
             data[col] = data[col].replace(to_replace=0, method='ffill')
     data.to_csv("data/" + normal_file_name, index=False)
+    
+#Function to produce dataframe with data-related columns
+#data: dataframe with 'Date' column
+#var: "year","month","weekday","week","day"
+def get_date_value(data, var):
+    date = {'year':'%Y','month':'%B','weekday':'%A','day':'%d','week':'%U'}
+    l = []
+    for i in range(len(data)):
+        l.append(datetime.strptime(data.Date[i],'%d-%m-%y').strftime(date[var]))
+    l = pd.DataFrame(l, columns=[var])
+    data_date = l[var].str.get_dummies()
+    data = pd.concat([data,data_date],axis=1)
+    return(data)
+
+
