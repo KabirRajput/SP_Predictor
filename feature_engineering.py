@@ -240,4 +240,14 @@ def get_date_value(data, var):
     data = pd.concat([data,data_date],axis=1)
     return(data)
 
-
+#Function to remove seasonal patterns from all columns in a file
+#data: 'DJI_1d_10y.csv'
+def deseasonality(data):
+    path = 'data/'
+    name = data.split('.')[0]
+    data = pd.read_csv(path+data)
+    data = data.set_index('Date')
+    for i in data.columns:
+        decom = seasonal_decompose(data[i], freq=int(len(data)/10))
+        data[i] -= decom.seasonal
+    data.to_csv(path+name+'_stationary.csv')
