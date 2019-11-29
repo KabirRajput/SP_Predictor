@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import GridSearchCV, ShuffleSplit
@@ -9,24 +11,32 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from statsmodels.tsa.arima_model import ARIMA
 import feature_engineering as fe
+'''
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
-
+'''
 from sklearn.metrics import accuracy_score, mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LogisticRegression
 
 
-def fit_ada_boost(features, labels):
+def fit_ada_boost(features, labels,reg=False):
     param_dist = {
         'n_estimators': [50, 100, 300, 1000, 1500, 2000],
         'learning_rate': [0.01, 0.05, 0.1, 0.3, 1]
         # 'loss': ['linear', 'square', 'exponential']
     }
-
-    pre_gs_inst = RandomizedSearchCV(AdaBoostClassifier(),
+    if reg:
+        param_dist['loss'] = ['linear', 'square', 'exponential']
+        pre_gs_inst = RandomizedSearchCV(AdaBoostRegressor(),
+                                         param_distributions=param_dist,
+                                         cv=3,
+                                         n_iter=10,
+                                         n_jobs=-1)
+    else:
+        pre_gs_inst = RandomizedSearchCV(AdaBoostClassifier(),
                                      param_distributions=param_dist,
                                      cv=3,
                                      n_iter=10,
@@ -36,7 +46,7 @@ def fit_ada_boost(features, labels):
     return model
 
 
-def fit_random_forest(features, labels):
+def fit_random_forest(features, labels, reg=False):
     n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
     max_features = ['auto', 'sqrt']
     max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
@@ -58,6 +68,8 @@ def fit_random_forest(features, labels):
      'min_samples_split': [2, 5, 10],
      'n_estimators': [600, 800, 1000, 1200, 1400, 1600, 1800, 2000]}
     rf = RandomForestClassifier()
+    if reg:
+        rf = RandomForestRegressor()
     model = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=100, cv=3, verbose=2,
                                random_state=42,
                                n_jobs=-1)
@@ -145,7 +157,7 @@ def get_mse(y_true, pred, scaler_label):
 # 2. Replace the 2 with 0 in label since the output layer of neural network only accept [0, 1]
 def reconstruct(xTrain, xTest, yTrain, yTest):
     return xTrain.drop(columns=['Unnamed: 0'], axis=1), xTest.drop(columns=['Unnamed: 0'], axis=1), yTrain.replace(2, 0), yTest.replace(2, 0)
-
+'''
 def fit_FNN(features, labels, withTuning=False):
     # Some common parameters for models
     epochs = 100
@@ -257,3 +269,4 @@ def fit_LSTM_reg(features, labels):
     history = lstm_model.fit(train_univariate, epochs=EPOCHS,
                       steps_per_epoch=EVALUATION_INTERVAL)
     return lstm_model
+'''
