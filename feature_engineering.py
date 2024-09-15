@@ -31,6 +31,7 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import ta
+from sklearn.preprocessing import MinMaxScaler
 
 
 class Signals:
@@ -137,6 +138,7 @@ def generate_data_reg():
     data_norm = data_norm.drop(["Signal"], axis=1)
     y = generate_y_reg(data, 'Close').shift(-1)
     data_norm.insert(data_norm.columns.get_loc('Date') + 1, 'Y', y)
+    data_norm = data_norm.drop(["Unnamed: 0"], axis=1)  # data_normalizaed data somehow got an Index row
     data_norm.dropna().to_csv(dd.file_name("data_reg"), index=False, float_format='%.9f')
 
 
@@ -202,3 +204,50 @@ def normalize_data(file_name, normal_file_name):
             data[col] = data[col].replace(to_replace=0, method='ffill')
 
     data.to_csv("data/" + normal_file_name)
+
+
+def ordered_train_test_split(data, y_col_name, ratio=80):
+    if (ratio > 99 or ratio < 1):
+        print("ratio must be between 1 and 99")
+        return -1
+    train = data.head(int(len(data) * (ratio / 100)))
+    test = data.iloc[-(int(len(data) * ((100 - ratio) / 100))):]
+    return train.drop([y_col_name], axis=1), test.drop([y_col_name], axis=1), train[y_col_name], test[y_col_name]
+
+# Apply the MinMaxScaler to normalize features, but not label
+# Save it. Example: file_name="data_1d_10y"  normal_file_name="data_minmax_1d_10y"
+def apply_min_max_scaler(file_name, normal_file_name):
+    data = pd.read_csv("data/" + file_name)
+    data = data.drop(['Volume', 'Unnamed: 0', 'Signal', 'Date'], axis=1)
+    data = data.ffill(axis=0)
+    for col in data.columns:
+        if col != 'Close':
+            scaler=MinMaxScaler()
+            data[col] = scaler.fit_transform(data[col].values.reshape(-1, 1))
+            data[col] = data[col].replace(to_replace=0, method='ffill')
+    data.to_csv("data/" + normal_file_name, index=False)
+    
+#Function to produce dataframe with data-related columns
+#data: dataframe with 'Date' column
+#var: "year","month","weekday","week","day"
+def get_date_value(data, var):
+    date = {'year':'%Y','month':'%B','weekday':'%A','day':'%d','week':'%U'}
+    l = []
+    for i in range(len(data)):
+        l.append(datetime.strptime(data.Date[i],'%d-%m-%y').strftime(date[var]))
+    l = pd.DataFrame(l, columns=[var])
+    data_date = l[var].str.get_dummies()
+    data = pd.concat([data,data_date],axis=1)
+    return(data)
+
+#Function to remove seasonal patterns from all columns in a file
+#data: 'DJI_1d_10y.csv'
+def deseasonality(data):
+    path = 'data/'
+    name = data.split('.')[0]
+    data = pd.read_csv(path+data)
+    data = data.set_index('Date')
+    for i in data.columns:
+        decom = seasonal_decompose(data[i], freq=int(len(data)/10))
+        data[i] -= decom.seasonal
+    data.to_csv(path+name+'_stationary.csv')

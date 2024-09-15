@@ -1,11 +1,44 @@
-Model,%age correct,feature excluded,# of years,comments
-AdaBoost Classifier,51.6,Date,5,"Preliminary, 80/20 randomly sliced"
-Random Forest Classifier,51.2,Date,5,"Preliminary, 80/20 randomly sliced"
-SVM,51.2,Date,5,"Preliminary, 80/20 first 80% for training and last 20% for testing"
-KNN,57.7,Date,5,"Preliminary, 80/20 randomly sliced"
-Gradient Boosting Classifier,53.2,Date,5,"Preliminary, 80/20 randomly sliced"
-AdaBoost Classifier,53.2,Date,10,"Preliminary, 80/20 randomly sliced"
-Random Forest Classifier,51.6,Date,10,"Preliminary, 80/20 randomly sliced"
-SVM,52.6,Date,10,"Preliminary, 80/20 first 80% for training and last 20% for testing"
-KNN,52.4,Date,10,"Preliminary, 80/20 randomly sliced"
-Gradient Boosting Classifier,53.2,Date,10,"Preliminary, 80/20 randomly sliced"
+Model,%age correct,MSE,feature excluded,# of years,comments
+AdaBoost Classifier,51.6,-,Date,5,"Preliminary, 80/20 randomly sliced"
+Random Forest Classifier,51.2,-,Date,5,"Preliminary, 80/20 randomly sliced"
+SVM,51.2,-,Date,5,"Preliminary, 80/20 first 80% for training and last 20% for testing"
+KNN,57.7,-,Date,5,"Preliminary, 80/20 randomly sliced"
+Gradient Boosting Classifier,53.2,-,Date,5,"Preliminary, 80/20 randomly sliced"
+AdaBoost Classifier,53.2,-,Date,10,"Preliminary, 80/20 randomly sliced"
+Random Forest Classifier,51.6,-,Date,10,"Preliminary, 80/20 randomly sliced"
+SVM,52.6,-,Date,10,"Preliminary, 80/20 first 80% for training and last 20% for testing"
+KNN,52.4,-,Date,10,"Preliminary, 80/20 randomly sliced"
+Gradient Boosting Classifier,53.2,-,Date,10,"Preliminary, 80/20 randomly sliced"
+Logistic Regression,51.2,Date,5,"Preliminary, 80/20 randomly sliced",
+Logistic Regression,54.2,Date,10,"Preliminary, 80/20 randomly sliced",
+FNN,53.2,-,Date,10,"Preliminary, 80/20 randomly sliced"
+LSTM (Regression),-,1985.1,"Date, Volume, Signal",10,"Preliminary, 80/20 randomly sliced"
+AdaBoost Classifier,56,,Date,10,"Technical indicators used, order feature used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+Random Forest Classifier,55,,Date,10,"Technical indicators used, order feature used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+SVM,55,,Date,10,"Technical indicators used, order feature used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+KNN,54,,Date,10,"Technical indicators used, order feature used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+Gradient Boosting Classifier,54,,Date,10,"Technical indicators used, order feature used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+Logistic Regression,52.8,,Date,10,"Technical indicators used, order feature used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+"ARIMA(2,1,2)",53.6,,NA,10,lags determined by MLE
+"ARIMA(1,1,1)",54.8,,NA,10,NA
+"ARIMA(1,1,2)",54.2,,NA,10,NA
+"ARIMA(2,1,1)",55,,NA,10,NA
+"ARIMA(3,1,1)",54.4,,NA,10,NA
+"ARIMA(3,1,2)",54.2,,NA,10,NA
+"ARIMA(3,1,0)",54.2,,NA,10,NA
+"ARIMA(1,1,0)",54.6,,NA,10,NA
+"ARIMA(2,1,0)",54.2,,NA,10,NA
+"ARIMA(2,2,0)",54.6,,NA,10,NA
+"ARIMA(1,0,1)",52.6,,NA,10,NA
+"ARIMA(1,0,0)",54.2,,NA,10,NA
+"ARIMA(3,0,0)",54.2,,NA,10,NA
+"ARIMA(4,1,1)",54.4,,NA,10,NA
+"ARIMA(4,1,4)",53,,NA,10,NA
+"ARIMA(10,0,0)",54.2,,NA,10,NA
+AdaBoost Classifier,54.6,,Date,10,"Technical indicators, randomly sliced"
+AdaBoost Classifier,55.8,,Date,10,"Technical indicators used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+AdaBoost Classifier,55,,Date,10,"Features used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+AdaBoost Classifier,55,,Date,10,"Technical indicators and features used, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+AdaBoost Classifier,55.8,,"Date, EUR,GBP,NASDAQ,JPY,CNY",10,"Features used without white noise columns, train and test data was done in order i.e. first 80% for training and last 20% for testing"
+AdaBoost Classifier,55,,Date,10,Features with order and train test sequence split
+AdaBoost Classifier,55,,"Date, EUR,GBP,NASDAQ,JPY,CNY",10,"Features used without white noise columns but with order column, train and test data was done in order i.e. first 80% for training and last 20% for testing"
